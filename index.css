@@ -1,0 +1,56 @@
+body {
+    background-color: rgb(54, 54, 54);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+
+
+header {
+
+    display: flex;
+    flex-direction:row-reverse;
+    margin: 0 60px;
+    
+}
+
+.headerbutton {
+    font-weight:lighter;
+
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    cursor: pointer;
+    font-size: 22px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-color: rgba(0, 0, 0, 0);
+    padding: 0 15px;
+}
+
+.signup {
+    border: solid;
+    background-color: rgb(2, 113, 177);
+    border-radius: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    border-color: rgb(2, 113, 177);
+}
+
+h1 {
+    font-size: 45px;
+}
+
+h2 {
+    font-size: 16px;
+    font-weight:lighter;
+}
+
+.title {
+    margin: auto;
+    width: 50%;
+    height: 40%;
+    padding: 10%;
+    text-align: center;
+}
