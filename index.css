@@ -79,6 +79,14 @@ h4 {
     text-align: center;
 }
 
+.title2 {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
 .startdiv {
     margin: auto;
     width: 50%;
