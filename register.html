@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="register.css">
 <link rel="stylesheet" href="input.css">
+<script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 <html>
 <body>
     <section class="center">
@@ -9,16 +11,18 @@
         <h3>Lets get you started!</h3>
         <h4>Please create an account.</h4>
         <section class="info">
-        <input type="text" class="loginInput" id="email" placeholder="Email">
+        <input type="text" class="loginInput" id="username" placeholder="Username">
         <input type="text" class="loginInput" id="password" placeholder="Password">
 
 
     </section>
+    <div class="wrong" id="alreadyuse" hidden="true"><h5>Username is already in use!</h5></div>
+
     <section class="signupbtndiv">
         <h4>By pressing the Sign Up button, you accept the <a href="TOS.html"><u>Terms of Service</u></a>.</h4>
     <button class="signupbtn" id="signup">Sign Up</button>
     <h4>Already have a account?</h4>
-    <b><button class="loginbutton">Login instead!</button></b>
+    <form action="login.html"><b><button class="loginbutton">Login instead!</button></b></form>
 </section>
     </section>
 
