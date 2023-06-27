@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="register.css">
 <link rel="stylesheet" href="input.css">
-
+<script type="module" src="main.js"></script>
 <body>
     <section class="center">
     <section class="main">
@@ -9,17 +9,17 @@
         <h3>Login</h3>
         <h4>Please log into your account.</h4>
         <section class="info">
-        <input type="text" class="loginInput" placeholder="Username">
-        <input type="text" class="loginInput" placeholder="Username">
-
-
+        <input type="text" class="loginInput" id="username" placeholder="Username">
+        <input type="text" class="loginInput" id="password" placeholder="Password">
     </section>
+    <div class="wrong" id="wrongtext" hidden="true"><h5>Username or Password is wrong!</h5></div>
+
     <section class="signupbtndiv">
-    <button class="signupbtn">Login</button>
+    <button class="signupbtn" id="login">Login</button>
     <h4>Dont have a account?</h4>
     <form action="register.html"><b><button class="loginbutton">Create a account!</button></form>
 </section></b>
-    </section>
+    </section>  
 
 </section>
 </body>

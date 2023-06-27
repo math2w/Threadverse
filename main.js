@@ -29,10 +29,11 @@ const database = getDatabase();
 //register function
 
 const signupbtn = document.getElementById("signup");
+const loginbtn = document.getElementById("login");
 function register() {
-    const username = document.getElementById("username").value;
+    const username = document.getElementById("password").value;
     const usernamestyle = document.getElementById("username").style;
-    const password = document.getElementById("password").value;
+    const password = document.getElementById("username").value;
     const alreadyuse = document.getElementById("alreadyuse");
     const usernames = ref(database, 'users/' + username + '/username');
 
@@ -56,6 +57,36 @@ function register() {
         }
     });
 }
+
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const usernames = ref(database, 'users/' + username + '/username');
+    const passwords = ref(database, 'users/' + password + '/username');
+    const usernamestyle = document.getElementById("username").style;
+    const passwordStyle = document.getElementById("password").style;
+    const wrongtext = document.getElementById("wrongtext");
+
+
+    if (validateField(username, password) == false) {
+        return;  
+      };
+      const dbref = ref(getDatabase());
+
+      get(child(dbref, 'users/' + username)) && get(child(dbref, 'users/' + password)).then((snapshot) => {
+        if (snapshot.exists()) {
+            window.location.replace('mainpage.html');
+
+        } else {
+            usernamestyle.borderColor = "red";
+            passwordStyle.borderColor = "red";
+            wrongtext.hidden = false;
+        }
+      });
+
+
+}
+
 function validateField(username, password) {
 
     if (username.length <= 0 || password.length <= 0) {
@@ -67,9 +98,16 @@ function validateField(username, password) {
 }
 
 
-
+if (signupbtn != null) {
 signupbtn.onclick = function() {
     console.log('attempting to sign up');
     register();
 
+}
+};
+
+if (loginbtn != null) {
+loginbtn.onclick = function() { 
+    login();
+}
 };
