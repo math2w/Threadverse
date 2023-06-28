@@ -75,6 +75,7 @@ function login() {
 
       get(child(dbref, 'users/' + username)) && get(child(dbref, 'users/' + password)).then((snapshot) => {
         if (snapshot.exists()) {
+            document.cookie = "username=" + username + ";" + "expires=" + new Date(2038,0,1).toUTCString();
             window.location.replace('mainpage.html');
 
         } else {
@@ -96,6 +97,28 @@ function validateField(username, password) {
         return true;
     }
 }
+
+function getCookie(name) {
+    // Split all cookies into an array
+    var cookies = document.cookie.split(';');
+  
+    // Loop through the cookies
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+  
+      // Trim leading and trailing spaces
+      cookie = cookie.trim();
+  
+      // Check if the cookie starts with the name we're looking for
+      if (cookie.indexOf(name + '=') === 0) {
+        // Extract and return the cookie value
+        return cookie.substring(name.length + 1, cookie.length);
+      }
+    }
+  
+    // Cookie not found
+    return null;
+  }
 
 
 if (signupbtn != null) {

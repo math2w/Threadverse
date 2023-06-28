@@ -1,0 +1,30 @@
+.profile {
+    border-radius: 50%;
+    border: solid;
+    border: rgba(0, 0, 0, 0);
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.profileimg {
+    border-radius: 50%;
+    border: solid;
+    border: rgba(0, 0, 0, 0);
+    width: 60px;
+    height: 60px;
+}
+
+dialog {
+    background-color: rgb(80, 80, 80);
+    border: solid;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 20px;
+    width: 200px;
+    height: 300px;
+    position: absolute;
+    left: 81%;
+    top: -46%;
+    color: white;
+}

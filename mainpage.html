@@ -1,6 +1,70 @@
 <link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="mainpage.css">
+
 
 <body>
+
+  <header>
+    <button id="profilebtn" class="profile"><img class="profileimg" src="images/profile.jpg"></button>
+    <dialog close id="menu">
+      <h4>This will be the menu!</h4>
+      <form method="dialog">
+        <button>OK</button>
+      </form>
+    </dialog>
+  </header>
+
  <center><h1>Main page is going to be here.</h1></center>
-    <center><h4>But i havent even started on it yet!</h4></center>
+
+    <center><h4 id="name"></h4></center>
+    <button class="signup" id="signout">Log Out</button>
 </body>
+
+<script>
+
+function getCookie(name) {
+  // Split all cookies into an array
+  var cookies = document.cookie.split(';');
+
+  // Loop through the cookies
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+
+    // Trim leading and trailing spaces
+    cookie = cookie.trim();
+
+    // Check if the cookie starts with the name we're looking for
+    if (cookie.indexOf(name + '=') === 0) {
+      // Extract and return the cookie value
+      return cookie.substring(name.length + 1, cookie.length);
+    }
+  }
+
+  // Cookie not found
+  return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+    const menu = document.getElementById('menu');
+    const profilebtn = document.getElementById('profilebtn');
+    const signout = document.getElementById('signout');
+    const name = document.getElementById('name');
+    
+       if (document.cookie.includes('username')) {
+
+        name.innerHTML = "Hello, " + getCookie('username');
+       } else {
+        window.location.replace('index.html');
+       }
+
+       signout.onclick = function() {
+        deleteCookie('username');
+        window.location.reload();
+       }
+
+  profilebtn.onclick = function() {
+     menu.showModal();
+  }
+</script>
