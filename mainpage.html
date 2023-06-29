@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="mainpage.css">
 
@@ -5,11 +6,16 @@
 <body>
 
   <header>
-    <button id="profilebtn" class="profile"><img class="profileimg" src="images/profile.jpg"></button>
+    <button id="profilebtn" class="profile"><img class="profileimg" src="images/profile.png"></button>
     <dialog close id="menu">
-      <h4>This will be the menu!</h4>
+      <img class="menuprofile4" src="images/profile.png">
+      <h5 id="profilename">Username</h5>
+      <img src="images/line.png" class="line">
       <form method="dialog">
-        <button>OK</button>
+        <img class="menuprofile" src="images/menuprofile.png"><button class="dialogbtn">My profile</button>
+        <img class="menuprofile2" src="images/settings.png"><button class="dialogbtn">Settings</button>
+        <img class="menuprofile3" src="images/help.png"><button class="dialogbtn">Help</button>
+
       </form>
     </dialog>
   </header>
@@ -48,12 +54,13 @@ function deleteCookie(name) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
     const menu = document.getElementById('menu');
+    const profilename = document.getElementById('profilename');
     const profilebtn = document.getElementById('profilebtn');
     const signout = document.getElementById('signout');
     const name = document.getElementById('name');
     
        if (document.cookie.includes('username')) {
-
+        profilename.textContent = getCookie('username');
         name.innerHTML = "Hello, " + getCookie('username');
        } else {
         window.location.replace('index.html');
