@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="mainpage.css">
-
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <body>
+  
+  
 
   <header>
+    <form action="Profile.html">
     <button id="profilebtn" class="profile"><img class="profileimg" src="images/profile.png"></button>
-    <dialog close id="menu">
+  </form>
+     <dialog close id="menu">
       <img class="menuprofile4" src="images/profile.png">
       <h5 id="profilename">Username</h5>
       <img src="images/line.png" class="line">
       <form method="dialog">
+        <form action="Profile.html">
         <img class="menuprofile" src="images/menuprofile.png"><button class="dialogbtn">My profile</button>
+      </form>
         <img class="menuprofile2" src="images/settings.png"><button class="dialogbtn">Settings</button>
         <img class="menuprofile3" src="images/help.png"><button class="dialogbtn">Help</button>
 
@@ -24,17 +31,40 @@
 
   </header>
 
-  <div class="feeddiv">
     <ul>
-
+     <div class="feeddiv" id="feeddiv">
+      <center><div class="post" hidden="true" id="postdiv" tabindex="1">
+        <h6 hidden="true" id="UID">UID</h6>
+        <text class="usertext" id="user" tabindex="2"></text>
+        <h6 id="title">Title</h6>
+        <h2 id="desc">description</h2>
+       <img src="" class="img" width="70%" height="50%" id="image">
+      </center>
+      </div>
+    </div>
     </ul>
-  </div>
+ 
 
-    <center><h4 id="name"></h4></center>
-    <button class="signup" id="signout">Log Out</button>
+    <center><h5 id="name"></h5></center>
+    <button class="signup" id="signout" hidden="true">Log Out</button>
 </body>
 
 <script>
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDuU0009XmoSpkn1ehmfLzqtKKNQ9NOsys",
+    authDomain: "login-system-259fd.firebaseapp.com",
+    projectId: "login-system-259fd",
+    storageBucket: "login-system-259fd.appspot.com",
+    messagingSenderId: "723301353539",
+    appId: "1:723301353539:web:41754ed85876c50d9a2cf6",
+    measurementId: "G-F09GE2SHLZ"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+
+  var database = firebase.database();
 
 function getCookie(name) {
   // Split all cookies into an array
@@ -82,4 +112,104 @@ function deleteCookie(name) {
   profilebtn.onclick = function() {
      menu.showModal();
   }
+
+  function createPostHtml(title, description, image, timestamp) {
+
+  }
+
+  
+
+  // we get all the posts.
+  var hasReachedEnd = false;
+  var lastTimestamp = "";
+  var list = [];
+
+  function getPosts() {
+    if (hasReachedEnd) {
+      return;
+    }
+
+    var dataRef = database.ref('posts/').orderByChild("timestamp").limitToLast(100);
+      dataRef.once("value", function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+
+        list.push(childSnapshot.val());
+  
+    console.log(lastTimestamp);
+        
+      });
+
+      if (list.length < 5) {
+      hasReachedLastItem = true; // Update the flag to indicate the last item has been reached
+    }
+      
+
+      var copyelem = document.getElementById("postdiv");
+
+
+      for(i = 0; i < list.length; i++) {
+        var clone = copyelem.cloneNode(true);
+        clone.id = list[i].uid;
+        clone.name = list[i].uid;
+        clone.hidden = false;
+        var UID = clone.childNodes[1];
+        var date = clone.childNodes[2];
+        var user = clone.childNodes[3];
+
+        var title = clone.childNodes[5];
+        var desc = clone.childNodes[7];
+        var image = clone.childNodes[9];
+        UID.textContent = list[i].uid;
+        date.textContent = list[i].timestamp;
+        title.textContent = list[i].name;
+        user.textContent = list[i].user;
+        desc.textContent = list[i].desc;
+        var a = clone.getElementsByTagName("a");
+        if (list[i].image == "") {
+          image.remove();
+        } else {
+        image.src = list[i].image;
+        }
+        copyelem.after(clone);
+        
+
+
+
+
+
+
+      }
+
+
+      console.log(lastTimestamp);
+    }).catch(function(error) {
+      console.error(error);
+    });
+
+    
+  
+    
+  
+
+  }
+  getPosts();
+  
+
+  function redirectToView(UID) {
+    console.log(UID);
+  }
+
+
+  const div = document.getElementById("feeddiv");
+  div.addEventListener("click", function() {
+    if (event.target.tagName === "DIV" && event.target.id != "feeddiv") {
+      var clickeddiv = event.target;
+      
+      console.log(clickeddiv.id);
+      document.cookie = "postID=" + clickeddiv.id + ";" + "expires=" + new Date(2038,0,1).toUTCString();
+      window.location.replace("view-post.html");
+    }
+  })
+ 
+
 </script>

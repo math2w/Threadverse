@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="post.css">
+<script type="module" src="main.js"></script>
+
+
+<head> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="referrer" content="no-referrer">
 
 <body>
     <form action="mainpage.html">
@@ -12,9 +18,9 @@
         <input type="text" placeholder="Title" class="titleinput" id="title">
         <div class="uploaddiv">
             <h4>Upload a picture?</h4>
-        <input type="file" id="fileInput" class="upload-input">
+        <input type="file" id="fileInput" class="upload-input" accept="image/*"/>
         <label for="fileInput" class="upload-button">Choose a picture</label>
-        <h4>No picture chosen.</h4>
+        <h4 id="chosen">No picture chosen.</h4>
     </div>
 
 
@@ -26,3 +32,4 @@
     </div>
 
 </body>
+</head> 

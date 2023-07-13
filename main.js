@@ -3,6 +3,9 @@
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
   import { getAuth} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
   import { getDatabase, ref, set, get, child} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"; 
+  import {getStorage, ref as sref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js"; 
+
+
 
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,11 +28,17 @@
 
 const auth = getAuth(app);
 const database = getDatabase();
+const storage = getStorage();
+var imagelink = "";
+
 
 //register function
 
 const signupbtn = document.getElementById("signup");
 const loginbtn = document.getElementById("login");
+const postbtn = document.getElementById('postbtn');
+const fileupload = document.getElementById("fileInput");
+const changetext = document.getElementById("chosen");
 function register() {
     const username = document.getElementById("password").value;
     const usernamestyle = document.getElementById("username").style;
@@ -82,11 +91,61 @@ function login() {
             usernamestyle.borderColor = "red";
             passwordStyle.borderColor = "red";
             wrongtext.hidden = false;
+            
         }
       });
+}
+
+
+
+async function uploadToImgur(imageFile) {
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const response = await fetch('https://api.imgur.com/3/image', {
+      method: 'POST',
+      headers: {
+        Authorization: "Client-ID 7918f28944dd9b6"
+      },
+      body: formData
+    });
+
+    const data = await response.json();
+    return data.data.link;
+  } catch (error) {
+    console.error('Error uploading image to Imgur:', error);
+    return null;
+  }
+}
+
+async function uploadImage(image) {
+  var head = new Headers();
+  head.append("Authorization", "Client-ID 7918f28944dd9b6");
+
+  const formData = new FormData();
+  formData.append("image", image);
+
+  var result = "";
+
+  var requestOpt = {
+    method: "POST",
+    headers: head,
+    body: formData,
+    redirect: "follow"
+  };
+
+  fetch("https://api.imgur.com/3/image", requestOpt)
+  .then(response => response.text)
+  .then(result = console.log(result))
+  .catch(error => console.log("error", error));
 
 
 }
+
+
+
+    
 
 function validateField(username, password) {
 
@@ -121,6 +180,61 @@ function getCookie(name) {
   }
 
 
+  function uuidv4() {
+    return Math.floor(Math.random() * 999999999999999);
+  }
+  
+
+
+  async function post() {
+    const titletext = document.getElementById("title");
+    const desctext = document.getElementById("description");
+
+
+    if (titletext.value.length <= 0) {
+      alert('Write something in the title box!');
+      return;
+    }
+    const dref = ref(getDatabase());
+    const stref = sref(storage, 'images/');
+    const id = uuidv4();
+    const dateObject = new Date();  
+    
+    let datetime = dateObject.toLocaleString();
+    let date = datetime.split(' ', 5).join(' ');
+    
+    var imgurLink = "";
+    if (fileupload.files[0] != null) {
+        var file = fileupload.files[0];
+        imgurLink = await uploadToImgur(file);
+        if (imgurLink) {
+          console.log('Image uploaded to Imgur:', imgurLink);
+          // Display the link to the user
+          alert(`Image uploaded successfully!\n\nImgur link: ${imgurLink}`);
+        } else {
+          console.log('Image upload failed.');
+          alert('Image upload failed. Please try again.');
+        }
+    }
+
+    var username = getCookie("username");
+
+    const db = getDatabase();
+    set(ref(db, "posts/" + id), {
+      name: titletext.value,
+      desc: desctext.value,
+      image: imgurLink,
+      timestamp: date,
+      uid: id,
+      user: username
+
+    });
+
+    alert("posted!");
+
+  }
+
+
 if (signupbtn != null) {
 signupbtn.onclick = function() {
     console.log('attempting to sign up');
@@ -129,8 +243,27 @@ signupbtn.onclick = function() {
 }
 };
 
+if (fileupload != null) {
+  fileupload.onchange = function() {
+    var file = fileupload.files[0];
+    if (file.size > 20000000) {
+      alert("Image size is too big, please choose a image thats under 20MB");
+      file = null;
+      return;
+    }
+    changetext.textContent = file.name;
+  }
+}
+
+
 if (loginbtn != null) {
 loginbtn.onclick = function() { 
     login();
 }
+};
+
+if (postbtn != null) {
+  postbtn.onclick = function() {
+    post();
+  }
 };

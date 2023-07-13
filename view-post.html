@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="mainpage.css">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<body>
+    <form action="mainpage.html">
+    <button>back</button>
+</form>
+        <h1 id="name">Post name</h1>
+        <h5 style="margin-top: -60px;" id="desc">description</h5>
+        <h5 style="margin-top: -60px;" id="date">date</h5>
+        <h5 style="margin-top: -60px;" id="user">User</h5>
+        <img src="" width="700px" height="500px" id="img">
+
+      
+</body>
+
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyDuU0009XmoSpkn1ehmfLzqtKKNQ9NOsys",
+    authDomain: "login-system-259fd.firebaseapp.com",
+    projectId: "login-system-259fd",
+    storageBucket: "login-system-259fd.appspot.com",
+    messagingSenderId: "723301353539",
+    appId: "1:723301353539:web:41754ed85876c50d9a2cf6",
+    measurementId: "G-F09GE2SHLZ"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+
+  var database = firebase.database();
+
+
+function getCookie(name) {
+  // Split all cookies into an array
+  var cookies = document.cookie.split(';');
+
+  // Loop through the cookies
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+
+    // Trim leading and trailing spaces
+    cookie = cookie.trim();
+
+    // Check if the cookie starts with the name we're looking for
+    if (cookie.indexOf(name + '=') === 0) {
+      // Extract and return the cookie value
+      return cookie.substring(name.length + 1, cookie.length);
+    }
+  }
+}
+    var uid = getCookie("postID");
+var dataRef = database.ref('posts/' + uid);
+
+const name = document.getElementById("name");
+    const desc = document.getElementById("desc");
+    const date = document.getElementById("date");
+    const user = document.getElementById("user");
+    const img = document.getElementById("img");
+    dataRef.once("value", function(snapshot) {
+        const itemData = snapshot.val();
+        name.textContent = itemData.name;
+        desc.textContent = itemData.desc;
+        date.textContent = itemData.timestamp;
+        user.textContent = itemData.user;
+        if (itemData.img != "") {
+            img.src = itemData.image;
+        }
+    });
+
+
+</script>
