@@ -30,22 +30,24 @@ header {
 }
 
 .headerbutton {
+    transition: 200ms;
     font-weight:lighter;
-
     background-color: rgba(255, 255, 255, 0);
     color: white;
     cursor: pointer;
     font-size: 130%;
-    width: 200%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-color: rgba(0, 0, 0, 0);
-    padding: 0 -25%;
-    margin: 0 -50%;
+}
+
+.headerbutton:hover {
+    transition: 200ms;
+    transform: scale(1.1);
 }
 
 .headerbutton2 {
+    transition: 200ms;
     font-weight:lighter;
-
     background-color: rgba(255, 255, 255, 0);
     color: white;
     cursor: pointer;
@@ -57,7 +59,13 @@ header {
     text-align: center;
 }
 
+.headerbutton2:hover {
+    transition: 200ms;
+    transform: scale(1.1);
+}
+
 .signup {
+    transition: 200ms;
     border: solid;
     background-color: rgb(2, 113, 177);
     border-radius: 20px;
@@ -69,7 +77,15 @@ header {
     border-color: rgb(2, 113, 177);
 }
 
+.signup:hover {
+    transition: 200ms;
+    transform: scale(1.1);
+    background-color: rgb(0, 138, 218);
+    border-color: rgb(0, 138, 218);
+}
+
 .signup2 {
+    transition: 200ms;
     border: solid;
     background-color: rgb(2, 113, 177);
     border-radius: 15px;
@@ -80,6 +96,13 @@ header {
     width: 230px;
     height: 60px;
     border-color: rgb(2, 113, 177);
+}
+
+.signup2:hover {
+    transition: 200ms;
+    transform: scale(1.1);
+    background-color: rgb(0, 138, 218);
+    border-color: rgb(0, 138, 218);
 }
 
 h1 {

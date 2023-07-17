@@ -1,0 +1,27 @@
+.postview {
+    background-color: rgb(65, 65, 65);;
+    border : 1px solid rgb(75, 75, 75);
+    
+    width: 50%;
+    height: 85%;
+    border-radius: 20px;
+}
+
+img {
+    border-radius: 20px;
+    
+}
+
+.backbutton {
+    transition: 200ms;
+    background-color: transparent;
+    color: white;
+    font-size: 26px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: none;
+    cursor: pointer;
+}
+
+.backbutton:hover {
+    transform: scale(1.1);
+}

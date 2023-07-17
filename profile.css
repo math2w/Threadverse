@@ -1,0 +1,179 @@
+.profileimage {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    
+}
+
+.profilebtndiv{
+    position: absolute;
+    top: 115%;
+    left: 43%;
+    transform: translate(-50%, -50%);
+}
+
+.backbutton {
+    transition: 200ms;
+    background-color: transparent;
+    color: white;
+    font-size: 22px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    height: 10px;
+}
+
+h3 {
+    margin: 0 0 50px 0;
+}
+
+
+.backbutton:hover {
+    background-color: transparent;
+    transform: scale(1.1);
+}
+
+
+
+.profilediv {
+    background-color: rgb(65, 65, 65);;
+    border : 1px solid rgb(75, 75, 75);
+    width: 250px;
+    height: 450px;
+    border-radius: 20px;
+    text-align: center;
+    padding: 5%;
+    
+}
+
+.profile {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.textinput {
+    transition: 200ms;
+    
+    border: solid;
+    border-color: rgba(255, 3, 3, 0);
+    border-width: 1px;
+    background-color: rgb(78, 78, 78);
+    border-radius: 5px;
+    width: 300px;
+    height: 50px;
+    font-size: 30px;
+    color: white;
+    padding: 0px 15px;
+    justify-content: center;
+    margin: 20px;
+}
+
+h4 {
+    padding: 0 0 0 0;
+    
+}
+
+.username {
+    height: 0px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h5 {
+    margin: 10px;
+    font-weight: lighter;
+    font-size: 18px;
+}
+
+
+.textinput:hover {
+    background-color: rgb(78, 78, 78);
+}
+
+.textinput:focus {
+    transition: 200ms;
+    background-color: rgb(87, 87, 87);
+}
+
+button {
+    transition: 200ms;
+    cursor: pointer;
+    border: solid;
+    border-color: rgba(0, 0, 0, 0);
+    font-size: 30px;
+    background-color: rgb(2, 113, 177);
+    color:white;
+    width: 150px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+button:hover {
+    transition: 200ms;
+    background-color: rgb(2, 127, 199);
+}
+
+.deletebtn {
+    transition: 200ms;
+    cursor: pointer;
+    border: solid;
+    border-color: rgba(0, 0, 0, 0);
+    font-size: 30px;
+    background-color: rgb(127, 0, 0);
+    color:white;
+    width: 300px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+.deletebtn:hover {
+    transition: 200ms;
+    background-color: rgb(166, 0, 0);
+}
+
+.deletediv{
+    position: absolute;
+    top: 360%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.upload-input {
+    display: none;
+}
+
+.upload-button {
+    transition: 200ms;
+    cursor: pointer;
+    border: solid;
+    border-color: rgba(0, 0, 0, 0);
+    font-size: 30px;
+    background-color: rgb(2, 113, 177);
+    color:white;
+    width: 200px;
+    height: 70px;
+    border-radius: 8px;
+    padding-right: 10%;
+    padding-left: 10%;
+
+}
+
+.upload-button:hover {
+    transition: 200ms;
+    background-color: rgb(2, 127, 199);
+
+}
+
+
+.profilediv2{
+    width: 30%;
+    height: 100%;
+    margin-left: 70%;
+    
+}

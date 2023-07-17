@@ -88,12 +88,15 @@ function login() {
             window.location.replace('mainpage.html');
 
         } else {
+
             usernamestyle.borderColor = "red";
             passwordStyle.borderColor = "red";
             wrongtext.hidden = false;
-            
+
         }
+        
       });
+      
 }
 
 

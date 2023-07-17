@@ -5,14 +5,11 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <body>
-  
-  
-
   <header>
     <form action="Profile.html">
     <button id="profilebtn" class="profile"><img class="profileimg" src="images/profile.png"></button>
-  </form>
-     <dialog close id="menu">
+  </form hidden="true">
+     <dialog close id="menu" hidden="true">
       <img class="menuprofile4" src="images/profile.png">
       <h5 id="profilename">Username</h5>
       <img src="images/line.png" class="line">
@@ -30,11 +27,10 @@
   </form>
 
   </header>
-
     <ul>
      <div class="feeddiv" id="feeddiv">
       <center><div class="post" hidden="true" id="postdiv" tabindex="1">
-        <h6 hidden="true" id="UID">UID</h6>
+       <h4 id="UID" hidden="true">UID</h4>
         <text class="usertext" id="user" tabindex="2"></text>
         <h6 id="title">Title</h6>
         <h2 id="desc">description</h2>

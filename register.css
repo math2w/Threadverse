@@ -8,6 +8,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border : 1px solid rgb(75, 75, 75);
+
 }
 
 a {

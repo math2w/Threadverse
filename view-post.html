@@ -1,16 +1,26 @@
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="mainpage.css">
+<link rel="stylesheet" href="view-post.css">
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <body>
     <form action="mainpage.html">
-    <button>back</button>
+    <button class="backbutton">Back</button>
 </form>
-        <h1 id="name">Post name</h1>
+
+
+  
+        <center>
+          <div class="postview">
+        <h5 style="margin-left: -83%; margin-top: 2%; padding: 0;" id="date">date</h5>
+        <h5 style="top:6%; left: 72%; transform: translate(-50%, -50%); padding: 0; position: absolute;" id="user">User</h5>
+          <h1 id="name" style="padding: 10px;">Post name</h1>
         <h5 style="margin-top: -60px;" id="desc">description</h5>
-        <h5 style="margin-top: -60px;" id="date">date</h5>
-        <h5 style="margin-top: -60px;" id="user">User</h5>
-        <img src="" width="700px" height="500px" id="img">
+        <img src="" width="90%" height="61%" id="img">
+        <h5 style="margin-left: 80%; margin-top: 2%; width: 20%; padding: 0; color: rgb(167, 167, 167);" id="UID">UID</h5>
+      </div>
+      </center>   
 
       
 </body>
@@ -58,12 +68,14 @@ const name = document.getElementById("name");
     const date = document.getElementById("date");
     const user = document.getElementById("user");
     const img = document.getElementById("img");
+    const id = document.getElementById("UID");
     dataRef.once("value", function(snapshot) {
         const itemData = snapshot.val();
         name.textContent = itemData.name;
         desc.textContent = itemData.desc;
         date.textContent = itemData.timestamp;
         user.textContent = itemData.user;
+        id.textContent = "UID: " + uid;
         if (itemData.img != "") {
             img.src = itemData.image;
         }
