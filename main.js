@@ -39,6 +39,8 @@ const loginbtn = document.getElementById("login");
 const postbtn = document.getElementById('postbtn');
 const fileupload = document.getElementById("fileInput");
 const changetext = document.getElementById("chosen");
+var fileupload2 = document.getElementById("imageinput");
+var profilepic = document.getElementById("profilepicture");
 function register() {
     const username = document.getElementById("password").value;
     const usernamestyle = document.getElementById("username").style;
@@ -237,6 +239,69 @@ function getCookie(name) {
 
   }
 
+  async function upload(img) {
+    var imgurLink2 = "";
+  
+        imgurLink2 = await uploadToImgur(img);
+        if (imgurLink2) {
+          console.log('Image uploaded to Imgur:', imgurLink2);
+          // Display the link to the user
+          alert(`Image uploaded successfully!\n\nImgur link: ${imgurLink2}`);
+
+
+
+          return imgurLink2;
+        } else {
+          console.log('Image upload failed.');
+          alert('Image upload failed. Please try again.');
+        }
+    
+  }
+
+  if (fileupload2 != null) {
+
+    const dbref = ref(getDatabase());
+
+    var name = getCookie("username");
+
+
+    
+    get(child(dbref, 'users/admin')).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log("done");
+        profilepic.src = snapshot.profilepic.value;
+
+      } else {
+      
+        console.log("does not exist");
+
+      }
+      
+    });
+
+    fileupload2.addEventListener("change", function() {
+        
+      var imgfile = fileupload2.files[0];
+      
+          console.log("change");
+  
+      if (imgfile.size > 20000000) {
+        alert("Image size is too big, please choose a image thats under 20MB");
+        imgfile = null;
+        return;
+      }
+  
+    upload(imgfile);
+  
+      const fileread = new FileReader();
+      fileread.readAsDataURL(imgfile);
+      console.log("done");
+      fileread.addEventListener("load", function() {
+          profilepic.src = this.result;
+      })
+      
+    });
+  }
 
 if (signupbtn != null) {
 signupbtn.onclick = function() {
