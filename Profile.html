@@ -1,3 +1,4 @@
+<title>Threadverse</title>
 <!DOCTYPE html>
 
 <link rel="stylesheet" href="index.css">
@@ -6,18 +7,20 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script type="module" src="main.js"></script>
-
+<head>
+  <table id="Table_01" width="1001" height="1100" border="0" cellpadding="0" cellspacing="0"> 
 <body>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <meta name="referrer" content="no-referrer">
     <form action="mainpage.html">
     <button class="backbutton">Back</button>
 </form>
+<div hidden="true" id="hidediv">
     <center><h3>profile page</h3></center>
     <center><div class="profilediv">
     <section class="profile">
     <h5>current profile picture</h5>
-    <img id="profilepicture" class="profileimage" src="images/profile.png">
+    <img id="profileimage" class="profileimage" src="images/profile.png">
     
 <section class="profilebtndiv">
     <input type="file" id="imageinput" class="upload-input" accept="image/*"/>
@@ -25,22 +28,19 @@
 
 </section>
 
-<section class="username" tabindex="3">
-    <h4 style="margin-top: 20%;"> Change username</h4>
-    <input type="text" class="textinput" placeholder="Username">
-    <button style="margin-top: 5%;">Change</button>
-
+<section class="logoutdiv">
+  <button class="upload-button" id="logout">Log out</button>
 </section>
 
 <section class="deletediv">
-    <button class="deletebtn">Delete account</button>
+    <button class="deletebtn" id="deletebtn">Delete account</button>
 </section>
 
 </section></center>
 
-
 </div>
 </body>
+</head>
 
 
 
@@ -85,15 +85,54 @@
 var database = firebase.database();
 var profilepic = document.getElementById("profilepicture");
 var username = getCookie("username");
+var password = getCookie("password");
+var deletebtn = document.getElementById("deletebtn");
 
 
-var dataRef = database.ref('users/') + username;
+if (document.cookie.includes('username')) {
+  console.log("user verifed");
+       } else {
+        window.location.replace('index.html');
+       }
 
-dataRef.once("value", function(snapshot) {
-  profilepic.src = snapshot.profilepic;
-});
+var logout = document.getElementById("logout");
+
+logout.onclick = function() {
+  document.cookie = "username=" + username + ";" + "expires=" + new Date(1970,0,1).toUTCString();
+  window.location = window.location.href;
+}
+
+function deleteValueFromDatabase(childKey) {
+  try {
+    const databaseRef = database.ref(); // Reference to the root of the Firebase Realtime Database
+
+    // Remove the value associated with the provided child key
+    databaseRef.child(childKey).remove()
+      .then(() => {
+        console.log(`Value with key "${childKey}" was deleted successfully.`);
+      })
+      .catch((error) => {
+        console.error('Error occurred while deleting the value:', error);
+      });
+  } catch (error) {
+    console.error('Error occurred while deleting the value:', error);
+  }
+}
+
+function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970; path=/;`;
+}
 
 
+
+deletebtn.onclick = function() {
+
+  document.cookie = "username=" + username + ";" + "expires=" + new Date(1970,0,1).toUTCString();
+  document.cookie = "password=" + password + ";" + "expires=" + new Date(1970,0,1).toUTCString();
+  deleteValueFromDatabase("users/" + password);
+  window.location.reload();
+
+}
 
 
 </script>

@@ -107,8 +107,7 @@
     font-size: 30px;
     background-color: rgb(2, 113, 177);
     color:white;
-    width: 200px;
-    height: 70px;
+    padding: 20px 70px;
     border-radius: 8px;
 }
 

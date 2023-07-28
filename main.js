@@ -1,3 +1,7 @@
+  // Code written by Math2w.
+
+  // its a mess :(
+  
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
@@ -26,13 +30,11 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 
+  // get our firebase stuff.
 const auth = getAuth(app);
 const database = getDatabase();
 const storage = getStorage();
-var imagelink = "";
 
-
-//register function
 
 const signupbtn = document.getElementById("signup");
 const loginbtn = document.getElementById("login");
@@ -40,7 +42,65 @@ const postbtn = document.getElementById('postbtn');
 const fileupload = document.getElementById("fileInput");
 const changetext = document.getElementById("chosen");
 var fileupload2 = document.getElementById("imageinput");
-var profilepic = document.getElementById("profilepicture");
+var pfp = document.getElementById("profileimage");
+
+//get values and change them in firebase.
+
+async function getValueFromDatabase(childKey) {
+  try {
+    const databaseRef = ref(database); // Reference to the root of the Firebase Realtime Database
+
+    // Find the value using the provided child key
+    const snapshot = await get(child(databaseRef, childKey));
+    const value = snapshot.val();
+
+    if (value !== null) {
+      if (value != "") {
+        pfp.src = value;
+        
+      } else {
+        pfp.src = "images/profile.png";
+      }
+      var hidediv = document.getElementById("hidediv");
+      hidediv.hidden = false;
+
+      return value;
+    } else {
+      
+    }
+  } catch (error) {
+    console.error('Error occurred while getting the value:', error);
+    return null;
+  }
+}
+
+async function findAndChangeValue(childKey, newValue) {
+  try {
+    const databaseRef = ref(database); // Reference to the root of the Firebase Realtime Database
+
+
+    // Find the current value
+    const snapshot = await get(child(databaseRef, childKey));
+    const currentValue = snapshot.val();
+
+    if (currentValue !== null) {
+      
+
+      // Set the new value back to Firebase
+      await set(child(databaseRef, childKey), newValue);
+
+
+    } else {
+
+    }
+  } catch (error) {
+    console.error('Error occurred while updating the value:', error);
+  }
+}
+
+//register function
+
+
 function register() {
     const username = document.getElementById("password").value;
     const usernamestyle = document.getElementById("username").style;
@@ -61,13 +121,16 @@ function register() {
         } else {
             set(ref(database, 'users/' + username), {
                 username: username,
-                password: password
+                password: password,
+                profilepic: ""
                 
             });
             window.location.replace('login.html');
         }
     });
 }
+
+// The login function
 
 function login() {
     const username = document.getElementById("username").value;
@@ -87,6 +150,7 @@ function login() {
       get(child(dbref, 'users/' + username)) && get(child(dbref, 'users/' + password)).then((snapshot) => {
         if (snapshot.exists()) {
             document.cookie = "username=" + username + ";" + "expires=" + new Date(2038,0,1).toUTCString();
+            document.cookie = "password=" + password + ";" + "expires=" + new Date(2038,0,1).toUTCString();
             window.location.replace('mainpage.html');
 
         } else {
@@ -98,10 +162,9 @@ function login() {
         }
         
       });
-      
 }
 
-
+// upload image to imgur
 
 async function uploadToImgur(imageFile) {
   try {
@@ -123,34 +186,6 @@ async function uploadToImgur(imageFile) {
     return null;
   }
 }
-
-async function uploadImage(image) {
-  var head = new Headers();
-  head.append("Authorization", "Client-ID 7918f28944dd9b6");
-
-  const formData = new FormData();
-  formData.append("image", image);
-
-  var result = "";
-
-  var requestOpt = {
-    method: "POST",
-    headers: head,
-    body: formData,
-    redirect: "follow"
-  };
-
-  fetch("https://api.imgur.com/3/image", requestOpt)
-  .then(response => response.text)
-  .then(result = console.log(result))
-  .catch(error => console.log("error", error));
-
-
-}
-
-
-
-    
 
 function validateField(username, password) {
 
@@ -214,28 +249,41 @@ function getCookie(name) {
         imgurLink = await uploadToImgur(file);
         if (imgurLink) {
           console.log('Image uploaded to Imgur:', imgurLink);
-          // Display the link to the user
-          alert(`Image uploaded successfully!\n\nImgur link: ${imgurLink}`);
         } else {
           console.log('Image upload failed.');
-          alert('Image upload failed. Please try again.');
+          alert('Post failed to upload. Please try again.');
+          window.location.reload();
         }
     }
 
     var username = getCookie("username");
 
     const db = getDatabase();
-    set(ref(db, "posts/" + id), {
-      name: titletext.value,
-      desc: desctext.value,
-      image: imgurLink,
-      timestamp: date,
-      uid: id,
-      user: username
 
-    });
+    if (imgurLink != "") {
+      set(ref(db, "posts/" + id), {
+        name: titletext.value,
+        desc: desctext.value,
+        image: imgurLink,
+        timestamp: date,
+        uid: id,
+        user: username
+  
+      });
+    } else if (imgurLink == "") {
+      set(ref(db, "posts/" + id), {
+        name: titletext.value,
+        desc: desctext.value,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png",
+        timestamp: date,
+        uid: id,
+        user: username
+  
+      });
 
-    alert("posted!");
+    }
+  alert("posted!");
+  window.location.href = "mainpage.html";
 
   }
 
@@ -246,10 +294,11 @@ function getCookie(name) {
         if (imgurLink2) {
           console.log('Image uploaded to Imgur:', imgurLink2);
           // Display the link to the user
-          alert(`Image uploaded successfully!\n\nImgur link: ${imgurLink2}`);
+    var user = getCookie("password");
+          findAndChangeValue("users/" + user + "/profilepic", imgurLink2);
 
-
-
+          alert("profile Picture Changed!");
+    window.location.reload();
           return imgurLink2;
         } else {
           console.log('Image upload failed.');
@@ -260,24 +309,17 @@ function getCookie(name) {
 
   if (fileupload2 != null) {
 
-    const dbref = ref(getDatabase());
-
-    var name = getCookie("username");
 
 
+    var name = getCookie("password");
     
-    get(child(dbref, 'users/admin')).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log("done");
-        profilepic.src = snapshot.profilepic.value;
 
-      } else {
       
-        console.log("does not exist");
+    var profileimg = getValueFromDatabase("users/" + name + "/profilepic");
 
-      }
-      
-    });
+    if (profileimg != null) {
+      console.log(profileimg);
+    }
 
     fileupload2.addEventListener("change", function() {
         
@@ -297,7 +339,7 @@ function getCookie(name) {
       fileread.readAsDataURL(imgfile);
       console.log("done");
       fileread.addEventListener("load", function() {
-          profilepic.src = this.result;
+        pfp.src = this.result;
       })
       
     });

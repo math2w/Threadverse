@@ -3,11 +3,14 @@
 <link rel="stylesheet" href="mainpage.css">
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
+<title>Threadverse</title>
 <body>
+  <table id="Table_01" width="1001" height="1100" border="0" cellpadding="0" cellspacing="0"> 
+  <div id="hidediv" hidden="true">
   <header>
+    <h2 style="position: absolute; left: 300px; top: 15%; transform: translate(-50%, -50%); font-size: 24px;">Threadverse</h2>
     <form action="Profile.html">
-    <button id="profilebtn" class="profile"><img class="profileimg" src="images/profile.png"></button>
+    <button id="profilebtn" class="profile"><img id="profileimg" class="profileimg" src="images/profile.png"></button>
   </form hidden="true">
      <dialog close id="menu" hidden="true">
       <img class="menuprofile4" src="images/profile.png">
@@ -21,9 +24,13 @@
         <img class="menuprofile3" src="images/help.png"><button class="dialogbtn">Help</button>
 
       </form>
+      
     </dialog>
+    
     <form action="post.html">
+      
     <button id="profilebtn" class="profile" ><img class="profileimg" src="images/post.png"></button>
+    
   </form>
 
   </header>
@@ -41,9 +48,63 @@
     </ul>
  
 
-    <center><h5 id="name"></h5></center>
-    <button class="signup" id="signout" hidden="true">Log Out</button>
+    <center><h5 id="name" hidden="true" style="padding: 0; margin-bottom: -2px;"></h5></center>
+    <center><input type="text" hidden="true" class="loginInput" style="margin-bottom: 50px; font-size: 20px;" placeholder="Search for post with ID" id="searchbox"><button hidden="true" id="searchbutton" class="loginbutton">Search</button></center>
+  </div>
 </body>
+
+<style>
+  .loginInput {
+    transition: 200ms;
+    
+    border: solid;
+    border-color: rgba(255, 3, 3, 0);
+    border-width: 1px;
+    background-color: rgb(78, 78, 78);
+    border-radius: 5px;
+    width: 300px;
+    height: 50px;
+    font-size: 30px;
+    color: white;
+    padding: 0px 15px;
+    justify-content: center;
+    align-content: center;
+        margin: 20px;
+}
+
+.loginInput:hover {
+    background-color: rgb(78, 78, 78);
+}
+
+.loginInput:focus {
+    transition: 200ms;
+    background-color: rgb(87, 87, 87);
+
+}
+
+.loginbutton {
+  transition: 200ms;
+    cursor: pointer;
+    border: solid;
+    border-color: rgba(0, 0, 0, 0);
+    font-size: 15px;
+    background-color: rgb(2, 113, 177);
+    color:white;
+    width: 150px;
+    height: 50px;
+    border-radius: 8px;
+    justify-content: center;
+    align-content: center;
+
+}
+
+.loginbutton:hover {
+  transition: 200ms;
+    background-color: rgb(2, 127, 199);
+}
+
+
+</style>
 
 <script>
 
@@ -90,7 +151,6 @@ function deleteCookie(name) {
     const menu = document.getElementById('menu');
     const profilename = document.getElementById('profilename');
     const profilebtn = document.getElementById('profilebtn');
-    const signout = document.getElementById('signout');
     const name = document.getElementById('name');
     
        if (document.cookie.includes('username')) {
@@ -100,20 +160,93 @@ function deleteCookie(name) {
         window.location.replace('index.html');
        }
 
-       signout.onclick = function() {
-        deleteCookie('username');
-        window.location.reload();
-       }
+
 
   profilebtn.onclick = function() {
      menu.showModal();
   }
 
-  function createPostHtml(title, description, image, timestamp) {
+  var pfp = document.getElementById("profileimg");
 
+  async function getValueFromDatabase(childKey) {
+  try {
+    const databaseRef = database.ref(); // Reference to the root of the Firebase Realtime Database
+
+
+
+    databaseRef.child(childKey).get().then((snapshot)  => {
+      const value = snapshot.val();
+
+      if (value !== null) {
+      console.log(`Value with key "${childKey}":`, value);
+      if (value != "") {
+        pfp.src = value;
+      } else {
+        pfp.src = "images/profile.png";
+      }
+      return value;
+    } else {
+      console.log(`Value with key "${childKey}" was not found in Firebase.`);
+      return null;
+    }
+    })
+
+
+  } catch (error) {
+    console.error('Error occurred while getting the value:', error);
+    return null;
   }
+}
+
+async function getValueFromDatabase2(childKey) {
+  try {
+    const databaseRef = database.ref(); // Reference to the root of the Firebase Realtime Database
+
+
+
+    databaseRef.child(childKey).get().then((snapshot)  => {
+      const value = snapshot.val();
+
+      if (value !== null) {
+      console.log(`Value with key "${childKey}":`, value);
+      console.log("cool");
+      document.cookie = "postID=" + searchbox.value + ";" + "expires=" + new Date(2038,0,1).toUTCString();
+      window.location.replace("view-post.html");
+      return value;
+
+    } 
+     else {
+      console.log(`Value with key "${childKey}" was not found in Firebase.`);
+      alert("Could not find post. Have you entered the right ID?")
+      return null;
+    } 
+    })
+
+
+  } catch (error) {
+    console.error('Error occurred while getting the value:', error);
+    return null;
+  }
+}
+
+
+var user = getCookie("password");
+
+getValueFromDatabase("users/"+ user + "/profilepic");
 
   
+
+var searchbox = document.getElementById("searchbox");
+var searchbutton = document.getElementById("searchbutton");
+
+searchbutton.onclick = function() {
+  if (searchbox.value == "") {
+    alert("Please enter a ID");
+    return;
+  }
+
+post = getValueFromDatabase2("posts/" + searchbox.value);
+}
 
   // we get all the posts.
   var hasReachedEnd = false;
@@ -128,21 +261,14 @@ function deleteCookie(name) {
     var dataRef = database.ref('posts/').orderByChild("timestamp").limitToLast(100);
       dataRef.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
-
         list.push(childSnapshot.val());
-  
     console.log(lastTimestamp);
-        
       });
 
       if (list.length < 5) {
       hasReachedLastItem = true; // Update the flag to indicate the last item has been reached
     }
-      
-
       var copyelem = document.getElementById("postdiv");
-
-
       for(i = 0; i < list.length; i++) {
         var clone = copyelem.cloneNode(true);
         clone.id = list[i].uid;
@@ -161,32 +287,24 @@ function deleteCookie(name) {
         user.textContent = list[i].user;
         desc.textContent = list[i].desc;
         var a = clone.getElementsByTagName("a");
-        if (list[i].image == "") {
+        if (list[i].image == "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png") {
           image.remove();
         } else {
         image.src = list[i].image;
         }
         copyelem.after(clone);
-        
-
-
-
-
-
-
       }
 
 
       console.log(lastTimestamp);
+      var hidediv = document.getElementById("hidediv");
+      hidediv.hidden = false;
+      name.hidden = false;
+      searchbox.hidden = false;
+      searchbutton.hidden = false;
     }).catch(function(error) {
       console.error(error);
     });
-
-    
-  
-    
-  
-
   }
   getPosts();
   

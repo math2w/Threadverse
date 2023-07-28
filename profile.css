@@ -1,7 +1,7 @@
 .profileimage {
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
     
 }
@@ -51,6 +51,13 @@ h3 {
 .profile {
     position: absolute;
     top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logoutdiv {
+    position: absolute;
+    top: 170%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -139,7 +146,7 @@ button:hover {
 
 .deletediv{
     position: absolute;
-    top: 360%;
+    top: 220%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
