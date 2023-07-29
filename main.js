@@ -254,13 +254,16 @@ function getCookie(name) {
           alert('Post failed to upload. Please try again.');
           window.location.reload();
         }
+    } else {
+      alert("Please upload a image");
+      return;
     }
 
     var username = getCookie("username");
 
     const db = getDatabase();
 
-    if (imgurLink != "") {
+
       set(ref(db, "posts/" + id), {
         name: titletext.value,
         desc: desctext.value,
@@ -270,18 +273,7 @@ function getCookie(name) {
         user: username
   
       });
-    } else if (imgurLink == "") {
-      set(ref(db, "posts/" + id), {
-        name: titletext.value,
-        desc: desctext.value,
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1200px-HD_transparent_picture.png",
-        timestamp: date,
-        uid: id,
-        user: username
-  
-      });
-
-    }
+    
   alert("posted!");
   window.location.href = "mainpage.html";
 
